@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+/* CSS goes here. */
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+
+var width = 960;
+    height = 1160;
+
+var svg = d3.select("body).append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var polys = topojson.feature(lunggar_rock_units, lunggar_rock_units.objects.polys);
+
+var projection = d3.geo.mercator()
+    .scale(5000)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+svg.append("path")
+    .datum(polys)
+    .attr("d", path);
+
+d3.json("lunggar_rock_units.json", function(error, lunggar_rock_units) {
+  svg.append("path")
+      .datum(topojson.feature(lunggar_rock_units, lunggar_rock_units.objects.polys))
+      .attr("d", path);
+});
+
+
+</script>
